@@ -1,17 +1,1 @@
-JOY STORE — ENVIO DE FOTOS PELO GITHUB
-Esta versão substitui integralmente o patch anterior de R2. Não ative o R2.
-
-1. Na conta joystorevg-commits, crie um repositório público chamado joystore520-fotos, marcando Add README, com branch main. Use-o somente para fotos públicas de produtos. Não conecte esse repositório aos builds da Cloudflare.
-2. No GitHub, Settings da conta > Developer settings > Personal access tokens > Fine-grained tokens: crie um token restrito SOMENTE a joystore520-fotos, permissão Contents: Read and write. Defina uma validade e guarde a data para renovar. Não use token clássico amplo. Não envie o token por chat nem o coloque no código.
-3. No Worker joy-store-520, Settings > Runtime variables and secrets > Production, crie PHOTO_GITHUB_TOKEN como Secret com esse token.
-4. No wrangler.jsonc do repositório principal, acrescente dentro de vars (separando as entradas por vírgulas):
-"PHOTO_GITHUB_OWNER":"joystorevg-commits",
-"PHOTO_GITHUB_REPO":"joystore520-fotos"
-Preserve CATALOG_ORIGIN, ENVIRONMENT, database_id e todas as demais configurações. Se chegou a incluir r2_buckets para este patch, retire somente essa entrada. Não exclua AUTH_PEPPER.
-5. Extraia este ZIP e envie as pastas src e public à raiz do repositório principal joystore520. Confirme a substituição por commit e aguarde a publicação automática do Worker.
-6. Reabra o painel com Ctrl+Shift+R. Em Cadastrar produto, escolha uma foto JPG, PNG ou WebP, até 20 MB. Ela será reduzida a até 1600 pixels e até 1 MB antes do envio. Preencha e salve; confira o produto na vitrine e em outro dispositivo.
-
-Os arquivos são salvos em produtos/ com nome baseado no conteúdo. Reenvios idênticos reutilizam o arquivo. Só dona e gerente podem enviar. A credencial fica no servidor; URLs públicas não a contêm. O repositório deve continuar público e disponível para as fotos funcionarem.
-Limites: depende da disponibilidade e limites da API do GitHub; validade do token exige renovação. Não é armazenamento ilimitado. Cadastro abandonado após upload pode deixar uma foto sem produto; limpeza automática ainda não implementada. Histórico Git cresce e exclusão de arquivo não apaga versões antigas. Use apenas fotos de catálogo, nunca documentos de clientes.
-Validação: 14 testes locais passaram, incluindo permissões, tamanho, formato, reenvio e respostas simuladas da API. Envio real e seleção no navegador publicado ainda devem ser validados depois da configuração.
-Referência: https://docs.github.com/en/rest/repos/contents
+Envie as pastas public e docs para a raiz do repositório joystore520 e confirme o commit. Aguarde a publicação Cloudflare e atualize a vitrine com Ctrl+Shift+R. Clique na foto ou Ver detalhes. A página individual usa index.html?produto=ID; o botão WhatsApp inclui o link, preço e variação. Copiar link permite compartilhar. Foto abre ampliada, com Fechar ou Esc. Produtos indisponíveis mostram mensagem. Nenhuma alteração no banco ou nas chaves. A vitrine no GitHub ainda depende de catalog-config.js apontando para a API, conforme configuração anterior. Teste local de página, variação e mensagem aprovado; falta conferir no navegador publicado. Links não têm prévia social específica por produto nesta versão.
