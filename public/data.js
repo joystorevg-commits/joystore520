@@ -1,0 +1,22 @@
+// Only in-memory views. Sales and customer data are never saved in browser storage.
+(function(){let cache={products:[],sales:[],movements:[],sellers:[],settings:{}},csrf='',user=null;const pending=new Map();
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+async function request(path,options={}){let response;try{response=await fetch(path,{credentials:'same-origin',cache:'no-store',...options});}catch{throw new Error('Sem conexão. A confirmação não chegou. Confira o histórico e tente novamente com os mesmos dados.');}let data;try{data=await response.json();}catch{throw new Error('Resposta inválida do servidor.');}if(!response.ok){if(response.status===401){cache={products:[],sales:[],movements:[],sellers:[],settings:{}};document.dispatchEvent(new Event('joy-logout'));}const e=new Error(data.error||'Não foi possível concluir.');e.status=response.status;throw e;}return data;}
+async function refresh(){const p=new URLSearchParams(window.joyPeriod||{});cache=await request('/api/state?'+p);user=cache.user;cache.movements=(cache.movements||[]).map(m=>({...m,createdAt:m.created_at,productName:m.product_name}));return cache;}
+async function mutate(path,data){const fingerprint=path+JSON.stringify(data),key=pending.get(fingerprint)||crypto.randomUUID();pending.set(fingerprint,key);try{const result=await request(path,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf,'Idempotency-Key':key},body:JSON.stringify(data)});pending.delete(fingerprint);try{await refresh();}catch{result.refreshWarning=true;}return result;}catch(e){if(e.status&&e.status<500)pending.delete(fingerprint);throw e;}}
+function findVariant(data,id){for(const product of data.products){const variant=product.variants.find(v=>v.id===id);if(variant)return {product,variant};}return null;}
+window.Joy={esc,money,read:()=>cache,user:()=>user,refresh,request,mutate,findVariant,round:n=>Math.round(Number(n)*100)/100,paid:s=>s.paid??s.payments.reduce((a,p)=>a+p.amount,0),balance:s=>s.balance??Math.max(0,s.total-s.payments.reduce((a,p)=>a+p.amount,0)),inventory:d=>d.products.flatMap(p=>p.variants.map(v=>({...v,productId:p.id,productName:p.name,category:p.category,price:p.price,cost:p.cost,image:p.image}))),
+async login(email,password){const r=await request('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});csrf=r.csrf;user=r.user;return refresh();},
+async init(){const r=await request('/api/me');csrf=r.csrf;user=r.user;return refresh();},
+async logout(){try{await request('/api/logout',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},body:'{}'});}finally{csrf='';user=null;cache={products:[],sales:[],movements:[],sellers:[],settings:{}};document.dispatchEvent(new Event('joy-logout'));}},
+async password(currentPassword,newPassword){return request('/api/password',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},body:JSON.stringify({currentPassword,newPassword})});},
+async commitSale(input){if(input.paymentStatus==='Parcial'&&!(Number(input.amountPaid)>0))throw new Error('Informe um valor positivo para a entrada.');const data=cache,subtotal=input.items.reduce((a,i)=>a+findVariant(data,i.variantId).product.price*i.qty,0),total=Math.round((subtotal-Number(input.discount||0)+Number(input.freight||0))*100)/100;const result=await mutate('/api/sales',{...input,discount:Number(input.discount||0),freight:Number(input.freight||0),amountPaid:input.paymentStatus==='Pago'?total:input.paymentStatus==='Parcial'?Number(input.amountPaid):0});return {ok:true,sale:{id:result.id},refreshWarning:result.refreshWarning};},
+async receivePayment(saleId,amount,method){return mutate('/api/payments',{saleId,amount,method});},
+async cancelSale(saleId,reason){return mutate('/api/cancel',{saleId,reason});},
+async adjustStock(variantId,delta,reason){return mutate('/api/stock',{variantId,delta,reason});},
+async addProduct(data){return mutate('/api/products',data);},
+async addVariant(productId,color,size,stock){return mutate('/api/variants',{productId,color,size,stock});},
+async save(data){return mutate('/api/settings',{whatsapp:data.settings.whatsapp});}
+};
+})();
