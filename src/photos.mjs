@@ -7,7 +7,7 @@ export async function savePhoto(bytes,env,send=fetch){
  const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');
  const path='produtos/'+hash+'.jpg',base=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
  const headers={'Authorization':'Bearer '+env.PHOTO_GITHUB_TOKEN,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'JoyStore520'};
- const call=async(url,options={})=>{try{return await send(url,{...options,headers:{...headers,...options.headers},redirect:'error',signal:AbortSignal.timeout(20000)});}catch{fail('Não foi possível enviar a foto. Tente novamente.',502);}};
+ const call=async(url,options={})=>{try{return await send(url,{...options,headers:{...headers,...options.headers},redirect:'manual',signal:AbortSignal.timeout(20000)});}catch{fail('Não foi possível enviar a foto. Tente novamente.',502);}};
  const raw=ref=>`https://raw.githubusercontent.com/${owner}/${repo}/${ref}/${path}`;
  const existing=await call(base+'?ref=main');
  if(existing.ok)return raw('main');
