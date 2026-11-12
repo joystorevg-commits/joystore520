@@ -2,7 +2,23 @@
   "name": "joy-store-520",
   "main": "src/worker.mjs",
   "compatibility_date": "2026-11-01",
-  "assets": {"directory":"./public", "binding":"ASSETS", "run_worker_first":true},
-  "d1_databases": [{"binding":"DB","database_name":"joy-store-520","database_id":"4086acc9-70f5-46a2-bdd3-054ba6a0e4d3","migrations_dir":"migrations"}],
-  "vars": {"CATALOG_ORIGIN":"https://joystorevg-commits.github.io", "ENVIRONMENT":"production"}
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "joy-store-520",
+      "database_id": "4086acc9-70f5-46a2-bdd3-054ba6a0e4d3",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "CATALOG_ORIGIN": "https://joystorevg-commits.github.io",
+    "ENVIRONMENT": "production",
+    "PHOTO_GITHUB_OWNER": "joystorevg-commits",
+    "PHOTO_GITHUB_REPO": "joystore520-fotos"
+  }
 }
