@@ -1,1 +1,56 @@
-Envie as pastas public e docs para a raiz do repositório joystore520 e confirme o commit. Aguarde a publicação Cloudflare e atualize a vitrine com Ctrl+Shift+R. Clique na foto ou Ver detalhes. A página individual usa index.html?produto=ID; o botão WhatsApp inclui o link, preço e variação. Copiar link permite compartilhar. Foto abre ampliada, com Fechar ou Esc. Produtos indisponíveis mostram mensagem. Nenhuma alteração no banco ou nas chaves. A vitrine no GitHub ainda depende de catalog-config.js apontando para a API, conforme configuração anterior. Teste local de página, variação e mensagem aprovado; falta conferir no navegador publicado. Links não têm prévia social específica por produto nesta versão.
+JOY STORE 520 - CATEGORIAS, FOTOS E TAMANHOS
+
+COMO INSTALAR
+1. Extraia este ZIP no computador.
+2. Abra o repositório joystorevg-commits/joystore520 no GitHub.
+3. Na raiz do repositório, use Add file > Upload files.
+4. Arraste as pastas src, public e docs extraídas deste ZIP. Preserve os nomes e caminhos.
+5. Clique em Commit changes e aguarde o deploy da Cloudflare terminar com sucesso.
+6. Reabra o painel. No computador, use Ctrl+Shift+R para carregar os arquivos novos.
+
+É uma atualização dos arquivos indicados. Não apague as pastas existentes.
+Não substitua wrangler.jsonc. Este pacote não contém configurações de domínio ou segredos.
+Não precisa executar SQL no console: as tabelas adicionais são criadas pelo sistema.
+Os produtos, usuários, vendas e saldos existentes são preservados.
+
+CATEGORIAS
+Em Produtos > Categorias, digite Macacões, Bolsas ou o nome desejado e clique em Adicionar categoria.
+Ela aparecerá no campo Categoria de Novo produto.
+Na vitrine, o filtro aparece quando existir um produto cadastrado nessa categoria.
+Proprietária e gerente podem criar categorias. Nomes repetidos são recusados.
+Esta atualização adiciona criação de categorias, não renomeação ou exclusão.
+
+VÁRIAS FOTOS
+No cadastro, selecione até 8 fotos de uma vez. A primeira é a capa.
+Formatos JPG, PNG e WebP, até 20 MB por arquivo. Aguarde os envios terminarem.
+A cliente vê as miniaturas na página do produto; toca para trocar a foto e ampliar.
+Para um produto existente, clique em Fotos na lista Produtos e selecione novas imagens.
+Limite de 8 fotos no total. As novas fotos são acrescentadas; não removem as anteriores.
+Nesta versão, não há troca da capa, reordenação ou exclusão de fotos.
+
+UM PRODUTO, VÁRIOS TAMANHOS
+Cadastre o nome, categoria, preço, custo e fotos uma só vez.
+Na seção Cores, tamanhos e quantidades, preencha uma linha por combinação:
+Azul | M | 3
+Azul | G | 2
+Preto | M | 1
+Use + Adicionar cor / tamanho para novas linhas, e depois Salvar produto.
+O sistema cria um único modelo com seis peças no exemplo, distribuídas por variação.
+A venda de uma peça azul M baixa apenas uma unidade da variação azul M.
+O preço, custo e galeria são compartilhados pelas variações desse modelo.
+Para bolsas, você pode usar o tamanho Único.
+
+PRODUTOS QUE JÁ EXISTEM
+Use + Cor / tamanho para acrescentar uma combinação ainda não cadastrada.
+Para repor uma combinação existente, use Estoque > Ajustar > Entrada (+).
+Consulte Estoque para ver quantos M, G ou outros tamanhos existem separadamente.
+Não cadastre novamente o modelo apenas porque chegou outro tamanho.
+
+VERIFICAÇÃO APÓS INSTALAR
+Crie uma categoria e um produto com dois tamanhos; confira as quantidades em Estoque.
+Abra o produto na vitrine, troque as fotos e teste a ampliação e o link do WhatsApp.
+Testes locais: 17 testes automatizados passaram, incluindo estoque por tamanho,
+permissões, categorias, persistência de fotos e compatibilidade com produtos antigos.
+O cadastro de categoria e de um produto com M=3 e G=2 foi conferido no navegador local.
+O envio real ao GitHub continua usando a integração existente; não foi feito novo upload
+no repositório de produção durante esta atualização.
