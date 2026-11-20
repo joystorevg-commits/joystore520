@@ -1,7 +1,7 @@
 /* Joy Store — public pages only. Basic consent mode (analytics only). */
 (function () {
   'use strict';
-  const GTM_ID = 'GTM-NKNL3RFW';
+  const GTM_ID = 'GTM-PSJNNM9X';
   const KEY = 'joy_analytics_consent_v1';
   const bio = /\/links(?:\/index\.html|\/)?$/.test(location.pathname);
   const pageType = bio ? 'bio' : new URLSearchParams(location.search).has('produto') ? 'produto' : 'catalogo';
