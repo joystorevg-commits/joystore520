@@ -1,0 +1,30 @@
+JOY STORE — GOOGLE TAG MANAGER
+Contêiner: GTM-NKNL3RFW
+
+INSTALAÇÃO
+1. Extraia o ZIP, mantendo a estrutura de pastas.
+2. No GitHub, repositório joystorevg-commits/joystore520, branch main, substitua os arquivos public/, docs/, src/ e scripts/ pelos arquivos correspondentes deste ZIP. Não exclua os outros arquivos da loja. Envie os novos arquivos joy-tracking.js nas duas pastas.
+3. Faça commit e confirme o deploy do Worker no Cloudflare. Se publicar manualmente, execute npm run deploy no repositório atualizado. Não execute migrações de banco; não são necessárias.
+4. Acesse https://joystoremodafeminina.com.br/ e https://joystoremodafeminina.com.br/links/ e faça um teste em janela anônima. Aceite a análise para carregar o GTM. Teste também a recusa: a loja e WhatsApp devem continuar funcionando.
+
+EVENTOS NO DATALAYER
+whatsapp_click: clique para abrir o WhatsApp (não comprova mensagem enviada nem venda). Variável click_origin: bio_instagram ou produto. Quando houver produto, product_id, product_name, product_category, product_price e currency.
+catalog_click: clique em Ver coleção na bio; click_origin = bio_instagram.
+view_item: visualização de um produto disponível no catálogo. Dados ecommerce.items, ecommerce.value, ecommerce.currency; também product_id/name/category/price.
+page_type: bio, catalogo ou produto. Page_view deve ser configurado na tag do Google Analytics 4 (GA4); o GTM por si só não registra relatórios de visitas.
+UTM: mantida a URL de campanha existente na bio.
+
+CONFIGURAR NO GTM
+1. Abra tagmanager.google.com e selecione GTM-NKNL3RFW.
+2. Crie uma Tag do Google com o ID de medição G-... do seu GA4, caso não exista. Configure acionamento All Pages e não duplique tags existentes. Use somente análise; não habilite recursos de publicidade nesta versão.
+3. Em Acionadores, crie um tipo Evento personalizado com nome exato whatsapp_click. Repita para catalog_click e view_item, caso queira medir todos os eventos.
+4. Em Tags, crie tags de evento do GA4 com os nomes correspondentes, vinculadas à tag do Google e aos respectivos acionadores. Para view_item, habilite envio de dados de comércio eletrônico da camada de dados. Se desejar dimensões de origem, crie variáveis da camada de dados para click_origin e page_type e envie como parâmetros de evento; registre-as como dimensões personalizadas no GA4. Desative o envio de URL de destino/mensagem do WhatsApp para evitar captura de conteúdo desnecessário; evite rastreamento automático de saída se preferir apenas o evento personalizado.
+5. Publique o contêiner. Use Tempo real/DebugView do GA4 para confirmar recebimento. O modo Preview completo pode exigir permissões CSP adicionais específicas do Tag Assistant; não foram abertas nesta versão por padrão.
+6. Opcional: marque whatsapp_click como evento principal no GA4. Não o marque como purchase: clique não é venda. Importação e tags de Google Ads exigem configuração adicional, consentimento de publicidade e revisão de CSP.
+
+PRIVACIDADE E SEGURANÇA
+GTM carrega apenas após aceitar análise; recusar não impede os links. Opção para alterar preferência no rodapé. Publicidade permanece negada. Não enviamos dados do PDV, nomes de clientes, telefones das clientes ou mensagens no evento personalizado. As tags que você publicar no contêiner precisam respeitar o consentimento; revise coleta automática e sua política de privacidade. Não instale tags HTML personalizadas sem avaliação.
+A CSP permite domínios necessários para GTM/GA4 apenas nas páginas públicas conhecidas; não habilita scripts inline nem unsafe-eval, e preserva configuração restrita do painel e API. Não foi instalada tag no painel. O link da bio usa o mesmo número e mensagem direta do arquivo atual. Ao mudar o número da loja, lembre de atualizar o link em public/links/index.html e docs/links/index.html.
+
+VERIFICAÇÃO
+Validação local: sintaxe JavaScript, eventos simulados, ausência de GTM sem consentimento, CSP das páginas públicas/painel e igualdade do link direto da bio. Não houve publicação ou teste real com o seu contêiner/GA4; o GitHub conectado tem apenas leitura. A entrega de um evento de clique pode falhar por bloqueadores de rastreamento ou navegação imediata, mas nunca deve impedir abrir o WhatsApp.
