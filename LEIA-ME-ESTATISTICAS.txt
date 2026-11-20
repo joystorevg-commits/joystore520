@@ -1,0 +1,16 @@
+JOY STORE — ATUALIZAÇÃO DE ESTATÍSTICAS PRÓPRIAS
+
+1. Extraia o ZIP e envie TODO o conteúdo para a raiz do repositório joystorevg-commits/joystore520, preservando as pastas. Não apague os arquivos já existentes. Confirme o commit e veja se Workers Builds e GitHub Pages passaram.
+2. Aguarde o deploy estar concluído e abra o site oficial. Aceite OU recuse o Google Analytics: o contador agregado da loja funciona independentemente dessa escolha.
+3. Abra a página da bio, a vitrine, um produto e clique no WhatsApp (não precisa enviar mensagem).
+4. Abra https://joystoremodafeminina.com.br/painel.html com o perfil proprietário ou gerente. Na tela inicial escolha Acompanhar desempenho ou o menu Acessos e cliques. No celular também há atalho em Mais. Se o app estiver com arquivos antigos, feche/reabra e atualize a página com Ctrl+F5 no navegador.
+5. Escolha 7 ou 30 dias. Os totais começam após a publicação, sem histórico anterior. O painel atualiza automaticamente pelo ciclo já existente de 30 segundos. O contador cria sua própria tabela joy_traffic_daily no D1 na primeira utilização (sem migração manual ou alteração das tabelas de vendas, estoque e clientes).
+6. Para atribuição mais consistente ao Instagram, use na bio:
+https://joystoremodafeminina.com.br/links/?utm_source=instagram&utm_medium=bio&utm_campaign=link_bio
+O link original continua funcionando. A origem é por página, não por pessoa/sessão; se a referência não estiver disponível, o acesso pode aparecer como Direto / sem referência.
+
+GTM-PSJNNM9X permanece. O Analytics só carrega com consentimento. Não alteramos as tags dentro do GTM: finalize o teste e a publicação delas separadamente. O link do WhatsApp continua direto, sem depender de Analytics.
+
+LIMITES: contagem de páginas e cliques (não visitantes únicos, conversas iniciadas ou vendas). Dados aproximados, sem deduplicação entre visitas ou proteção completa contra bots; tráfego abusivo pode inflar contagens ou consumir cotas do Cloudflare/D1. O endpoint aceita apenas categorias fixas e payload pequeno; origem não é autenticação de bots. Avalie rate limiting se necessário. A autorização Analytics não é autorização geral de privacidade; revise o aviso de navegação e a política comercial com a responsável pela loja. O contador não grava dados individuais na própria tabela; infraestrutura pode processar logs técnicos. A limpeza de registros com mais de 180 dias ocorre nas consultas de relatório.
+
+TESTES: 10 testes existentes e 3 novos testes de API passaram em SQLite local (node --test). Sintaxe dos JS conferida. Ainda não testado no domínio em produção; após deploy, teste com aceitação/recusa de Analytics e confira os contadores.

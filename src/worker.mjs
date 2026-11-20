@@ -1,4 +1,5 @@
 import {savePhoto} from './photos.mjs';
+import {recordTraffic,trafficSummary} from './traffic.mjs';
 import {random,digest,equal,passwordCheck,hashPassword,verifyPassword,cookie,session,throttle} from './auth.mjs';
 const roles=['owner','manager','seller','stock'];
 const paymentMethods=['Pix','Dinheiro','Cartão de crédito','Cartão de débito','Outro'];
@@ -35,6 +36,7 @@ async function state(req,env,user){const management=['owner','manager'].includes
  const totals=await stmt(env,`SELECT COUNT(*) AS count,COALESCE(SUM(total),0) AS revenue,COALESCE(SUM((SELECT COALESCE(SUM(amount),0) FROM payments WHERE sale_id=sales.id)),0) AS received,COALESCE(SUM(total-freight-(SELECT COALESCE(SUM(qty*unit_cost),0) FROM sale_items WHERE sale_id=sales.id)),0) AS margin FROM sales WHERE status='Concluída' AND ${filter}`,...args).first();
  return {user:safeUser(user),products,categories:categoryNames,sellers,settings,sales,period:{from,to,truncated:rows.length>500},finance:{count:totals.count,revenue:totals.revenue/100,received:totals.received/100,pending:(totals.revenue-totals.received)/100,...(management?{margin:totals.margin/100}:{})},movements:management?await all(env,'SELECT m.*,p.name AS product_name FROM movements m JOIN variants v ON v.id=m.variant_id JOIN products p ON p.id=v.product_id ORDER BY m.id DESC LIMIT 200'):[]};}
 async function route(req,env){const url=new URL(req.url),path=url.pathname;if(!path.startsWith('/api/'))return env.ASSETS.fetch(req);
+ if(path==='/api/traffic'&&req.method==='POST')return recordTraffic(req,env);
  if(path==='/api/catalog'&&req.method==='GET'){const origin=req.headers.get('origin');return json({products:await catalog(env),settings:await stmt(env,'SELECT whatsapp FROM settings WHERE id=1').first()||{whatsapp:''}},200,origin&&origin===env.CATALOG_ORIGIN?{'Access-Control-Allow-Origin':origin,'Vary':'Origin'}:{});}
  if(req.method!=='GET'&&req.headers.get('origin')!==url.origin)fail('Origem não autorizada.',403);
  if(path==='/api/setup'&&req.method==='POST'){if(!env.SETUP_TOKEN||env.SETUP_TOKEN.length<32||!equal(req.headers.get('X-Setup-Token')||'',env.SETUP_TOKEN))fail('Configuração indisponível.',403);const existing=await stmt(env,'SELECT id FROM bootstrap WHERE id=1').first();if(existing)fail('A conta inicial já foi criada.',409);const b=await body(req);passwordCheck(b.password);const email=text(b.email,254).toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail('E-mail inválido.');const userId=id(),name=text(b.name,100),hash=await hashPassword(b.password,env.AUTH_PEPPER);try{await env.DB.batch([stmt(env,'INSERT INTO users(id,name,email,password_hash,role,created_at) VALUES(?,?,?,?,?,?)',userId,name,email,hash,'owner',now()),stmt(env,'INSERT INTO bootstrap(id,user_id) VALUES(1,?)',userId)]);}catch{fail('A configuração já foi concluída ou os dados são inválidos.',409);}return json({ok:true},201);}
@@ -44,6 +46,7 @@ async function route(req,env){const url=new URL(req.url),path=url.pathname;if(!p
  if(path==='/api/me'&&req.method==='GET')return json({user:safeUser(user),csrf:user.csrf});
  if(path==='/api/logout'&&req.method==='POST'){await stmt(env,'DELETE FROM sessions WHERE token_hash=?',user.token_hash).run();return json({ok:true},200,{'Set-Cookie':cookie('',env,0)});}
  if(path==='/api/state'&&req.method==='GET')return json(await state(req,env,user));
+ if(path==='/api/traffic-summary'&&req.method==='GET'){allowed(user,['owner','manager']);return trafficSummary(req,env);}
  if(path==='/api/users'&&req.method==='GET'){allowed(user,['owner']);return json({users:await all(env,'SELECT id,name,email,role,active FROM users ORDER BY name')});}
  if(path==='/api/audit'&&req.method==='GET'){allowed(user,['owner','manager']);return json({events:await all(env,'SELECT a.*,u.name AS actor FROM audit a JOIN users u ON u.id=a.actor_id ORDER BY a.id DESC LIMIT 200')});}
  if(req.method!=='POST')fail('Rota não encontrada.',404);const b=await body(req);
