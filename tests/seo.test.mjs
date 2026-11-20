@@ -1,0 +1,15 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import worker from '../src/worker.mjs';
+import {D1} from './d1.mjs';
+const origin='https://joystoremodafeminina.com.br', shell=readFileSync(new URL('../public/index.html',import.meta.url),'utf8');
+const env={DB:new D1(),ENVIRONMENT:'local',ASSETS:{fetch:async req=>new Response(shell,{headers:{'Content-Type':'text/html; charset=utf-8','ETag':'test'}})}};env.DB.migrate();
+const db=env.DB.db;
+const insert=db.prepare('INSERT INTO products(id,name,category,price,cost,image,active) VALUES(?,?,?,?,?,?,?)');
+insert.run('p1','Vestido & <especial>','Vestidos',11990,4500,'assets/produto2.jpg',1);
+insert.run('p2','Peça inativa','Outros',9990,2000,'',0);
+const get=path=>worker.fetch(new Request(origin+path),env);
+test('sitemap contém apenas produto ativo e homepage',async()=>{const r=await get('/sitemap.xml');assert.equal(r.status,200);assert.match(r.headers.get('content-type'),/xml/);const x=await r.text();assert.match(x,/index\.html\?produto=p1/);assert.doesNotMatch(x,/produto=p2|painel/);assert.match(x,/<loc>https:\/\/joystoremodafeminina\.com\.br\/<\/loc>/);});
+test('produto tem HTML, preço real, canonical, JSON-LD sem custo e disponibilidade atualizada',async()=>{let r=await get('/index.html?produto=p1&utm_source=instagram');assert.equal(r.status,200);let html=await r.text();assert.match(html,/<title>Vestido &amp; &lt;especial&gt; \| Joy Store<\/title>/);assert.match(html,/<link rel="canonical" href="https:\/\/joystoremodafeminina\.com\.br\/index\.html\?produto=p1">/);assert.match(html,/R\$ 119,90/);const extract=h=>JSON.parse(h.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);let p=extract(html);assert.equal(p.offers.price,'119.90');assert.equal(p.offers.availability,'https://schema.org/OutOfStock');assert.equal(p.cost,undefined);assert.equal(p.name,'Vestido & <especial>');assert.match(html,/google-site-verification/);assert.match(html,/joy-tracking\.js/);db.prepare('INSERT INTO variants(id,product_id,color,size,stock) VALUES(?,?,?,?,?)').run('v1','p1','Amarelo','M',1);r=await get('/?produto=p1');p=extract(await r.text());assert.equal(p.offers.availability,'https://schema.org/InStock');});
+test('produto inativo retorna 404 e painel preserva política restrita',async()=>{let r=await get('/index.html?produto=p2');assert.equal(r.status,404);assert.match(r.headers.get('x-robots-tag'),/noindex/);r=await get('/painel.html');assert.match(r.headers.get('x-robots-tag'),/noindex/);assert.doesNotMatch(r.headers.get('content-security-policy'),/googletagmanager/);});

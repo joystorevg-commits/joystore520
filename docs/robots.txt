@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://joystoremodafeminina.com.br/sitemap.xml

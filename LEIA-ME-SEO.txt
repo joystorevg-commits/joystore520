@@ -1,0 +1,10 @@
+JOY STORE — ATUALIZAÇÃO SEO
+1. Extraia o ZIP. Envie os arquivos mantendo as respectivas pastas no GitHub. Não apague outros arquivos.
+2. Aguarde os indicadores de publicação bem-sucedida no GitHub/Cloudflare.
+3. Abra https://joystoremodafeminina.com.br/sitemap.xml — o Worker gera o XML usando o D1.
+4. Abra https://joystoremodafeminina.com.br/robots.txt — deve informar o endereço do sitemap.
+5. No Search Console da propriedade https://joystoremodafeminina.com.br/, abra Sitemaps e envie sitemap.xml.
+6. Abra um produto ativo pelo seu link já existente. Faça um teste em https://search.google.com/test/rich-results e inspecione a URL no Search Console.
+
+O sitemap é dinâmico no domínio atendido pelo Worker, não no GitHub Pages estático. Inclui a página inicial e os produtos ativos (inclusive esgotados); produtos desativados ficam de fora. Não exige migração D1. Produto inexistente/inativo: retorno 404. Acesso ao painel e setup: cabeçalho noindex, sem alteração de autenticação. Preço, estoque, categoria e imagens vêm do catálogo. Não inventa avaliações, frete ou marca das peças. Não altera links antigos, PDV, financeiro, Google Analytics, estatísticas próprias ou verificação Google. A indexação e snippets dependem do Google; não há garantia de posição ou exibição. Não foi publicado neste atendimento.
+Testes locais: npm test — 16 testes aprovados (incluindo 3 novos de SEO). Valide em produção após publicar. Se o projeto tiver sido alterado após esta revisão, compare os arquivos antes de substituir.
