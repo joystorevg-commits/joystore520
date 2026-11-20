@@ -1,21 +1,105 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7eee8"><meta name="description" content="Conheça a Joy Store. Confira nossa coleção e fale conosco pelo WhatsApp."><title>Joy Store | Links oficiais</title><link rel="icon" href="../assets/icon192.png"><style>
-*{box-sizing:border-box}body{margin:0;min-height:100svh;font-family:system-ui,-apple-system,sans-serif;color:#523d3b;background:radial-gradient(ellipse at 100% 0%,#e9c6c8 0,transparent 46%),radial-gradient(ellipse at 0% 100%,#ead3b9 0,transparent 52%),#f9f2ed;display:grid;place-items:center;padding:28px 20px}main{width:min(100%,420px);text-align:center;padding:28px 0} .mark{margin:auto;width:108px;height:108px;border:1px solid #b99a68;border-radius:50%;display:grid;place-content:center;background:#fff8f3;box-shadow:0 8px 28px #795b4e13;color:#7b514e;font:italic 42px Georgia,serif}.mark{display:block;object-fit:cover;border:3px solid #fff8f3}.mark small{font:9px system-ui;letter-spacing:4px;margin-top:0;color:#926e48}.eyebrow{font-size:10px;font-weight:650;letter-spacing:3px;text-transform:uppercase;color:#815d46;margin:27px 0 10px}h1{font:normal clamp(36px,10vw,48px)/1.1 Georgia,serif;margin:0;letter-spacing:-1.7px}h1 em{color:#945f65;font-weight:normal}p{font-size:14px;line-height:1.65;color:#6f5754;margin:14px auto 28px;max-width:300px}nav{display:grid;gap:13px}a{color:inherit;text-decoration:none}.link{min-height:80px;display:flex;align-items:center;text-align:left;gap:14px;padding:16px 17px;border:1px solid #d6b9ad;border-radius:16px;background:#fffaf6;box-shadow:0 6px 18px #795b4e0b;transition:transform .18s,box-shadow .18s}.link.primary{background:#80545a;color:#fff9f4;border-color:#80545a}.link:hover{transform:translateY(-2px);box-shadow:0 8px 20px #795b4e24}.link:focus-visible{outline:3px solid #ad8b53;outline-offset:4px}.link svg{width:24px;height:24px;flex-shrink:0}.link .arrow{width:18px;height:18px;margin-left:auto}.link strong{font-size:16px;display:block;font-weight:600}.link small{font-size:12px;display:block;margin-top:5px;color:#755c56}.primary small{color:#f4dfdb}footer{margin-top:36px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#826a61}footer .line{width:36px;height:1px;background:#b99a68;margin:0 auto 14px}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-.link[aria-disabled="true"]{opacity:.65;cursor:wait;pointer-events:none} </style></head><body><main><img class="mark" src="../assets/icon512.png" alt="Joy Store" width="108" height="108"><div class="eyebrow">Moda feminina · Canal oficial</div><h1>Seu estilo,<br><em>sua essência.</em></h1><p>Encontre peças que valorizam seu jeito de ser e inspire-se com a Joy Store.</p><nav aria-label="Links oficiais"><a class="link primary" href="../?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=link_bio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16l1 14H3L4 7Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg><span><strong>Ver coleção</strong><small>Explore nossa loja online</small></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m9 5 7 7-7 7"/></svg></a><a class="link" id="whatsapp" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.3-4.8A8.5 8.5 0 1 1 20.5 11.7Z"/><path d="M8 8c0 4 4 8 7.5 8l1.5-2-2.8-1.6-1.1 1c-1.5-.6-2.7-1.8-3.3-3.3l1-1.1L9.3 6.5 8 8Z"/></svg><span><strong>Comprar pelo WhatsApp</strong><small>Carregando atendimento…</small></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m9 5 7 7-7 7"/></svg></a></nav><p id="status" role="status" style="margin:14px auto 0;font-size:12px" hidden></p><footer><div class="line"></div>Joy Store · Moda feminina</footer></main><script src="../catalog-config.js"></script><script>
-(function(){
-  const button=document.getElementById('whatsapp');
-  const subtitle=button.querySelector('small');
-  const status=document.getElementById('status');
-  const message='Olá! Vim através do link da bio do Instagram da Joy Store e gostaria de saber mais sobre os produtos. 💕';
-  const api=(window.JOY_API_ORIGIN || location.origin).replace(/\/$/,'');
-  fetch(api+'/api/catalog',{credentials:'omit',cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('API');return r.json();}).then(data=>{
-    const phone=String(data.settings?.whatsapp||'').replace(/\D/g,'');
-    if(!/^55[1-9][0-9]{9,10}$/.test(phone))throw new Error('WhatsApp');
-    button.href='https://wa.me/'+phone+'?text='+encodeURIComponent(message);
-    button.removeAttribute('aria-disabled');
-    subtitle.textContent='Fale diretamente com a loja';
-  }).catch(()=>{
-    subtitle.textContent='Atendimento indisponível no momento';
-    status.hidden=false;status.textContent='Atualize a página para tentar novamente ou consulte o catálogo.';
-  });
-})();
-</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7eee8">
+  <meta name="description" content="Links oficiais da Joy Store. Acesse a coleção e fale com a loja pelo WhatsApp.">
+  <title>Joy Store | Links oficiais</title>
+  <style>
+    *{box-sizing:border-box}
+    :root{
+      --bg:#f9f2ed;
+      --text:#523d3b;
+      --muted:#6f5754;
+      --gold:#b99a68;
+      --rose:#8f6268;
+      --rose-deep:#80545a;
+      --panel:#fffaf6;
+      --border:#d6b9ad;
+      --shadow:0 8px 22px rgba(121,91,78,.10);
+    }
+    body{
+      margin:0;
+      min-height:100svh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(ellipse at 100% 0%,#e9c6c8 0,transparent 46%),
+        radial-gradient(ellipse at 0% 100%,#ead3b9 0,transparent 52%),
+        var(--bg);
+      display:grid;
+      place-items:center;
+      padding:28px 20px;
+    }
+    main{width:min(100%,420px);text-align:center;padding:28px 0}
+    .brand-wrap{display:grid;place-items:center;gap:0;margin-bottom:6px}
+    .brand-monogram{font-family:Georgia,serif;font-size:54px;line-height:1;color:#282422}
+    .brand-monogram span{color:#bda06f;font-size:19px;vertical-align:top}
+    .brand-name{font-size:16px;letter-spacing:.5em;margin-top:4px;font-weight:600;color:#282422;padding-left:.5em}
+    .brand-sub{font-size:9px;color:#736c67;letter-spacing:.28em;margin-top:7px}
+    .eyebrow{font-size:10px;font-weight:650;letter-spacing:3px;text-transform:uppercase;color:#815d46;margin:18px 0 12px}
+    h1{font:normal clamp(36px,10vw,48px)/1.07 Georgia,serif;margin:0;letter-spacing:-1.4px}
+    h1 em{color:#945f65;font-style:italic;font-weight:normal}
+    p{font-size:14px;line-height:1.65;color:var(--muted);margin:14px auto 28px;max-width:300px}
+    nav{display:grid;gap:13px}
+    a{color:inherit;text-decoration:none}
+    .link{
+      min-height:80px;display:flex;align-items:center;text-align:left;gap:14px;padding:16px 17px;
+      border:1px solid var(--border);border-radius:16px;background:var(--panel);box-shadow:0 6px 18px rgba(121,91,78,.05);
+      transition:transform .18s, box-shadow .18s, opacity .18s;
+    }
+    .link.primary{background:var(--rose-deep);color:#fff9f4;border-color:var(--rose-deep)}
+    .link:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(121,91,78,.14)}
+    .link:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+    .link svg{width:24px;height:24px;flex-shrink:0}
+    .link .arrow{width:18px;height:18px;margin-left:auto}
+    .link strong{font-size:16px;display:block;font-weight:600}
+    .link small{font-size:12px;display:block;margin-top:5px;color:#755c56}
+    .primary small{color:#f4dfdb}
+    footer{margin-top:34px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#826a61}
+    footer .line{width:36px;height:1px;background:var(--gold);margin:0 auto 14px}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand-wrap">
+      <div class="brand-monogram" aria-hidden="true">J<span>✦</span></div>
+      <div class="brand-name">JOY STORE</div>
+      <div class="brand-sub">casual · moderna · feminina</div>
+    </div>
+
+    <div class="eyebrow">Moda feminina · Canal oficial</div>
+    <h1>Seu estilo,<br><em>sua essência.</em></h1>
+    <p>Encontre peças que valorizam seu jeito de ser e inspire-se com a Joy Store.</p>
+
+    <nav aria-label="Links oficiais">
+      <a class="link primary" href="https://joystoremodafeminina.com.br/?utm_source=instagram&utm_medium=bio&utm_campaign=link_bio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16l1 14H3L4 7Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg>
+        <span>
+          <strong>Ver coleção</strong>
+          <small>Explore nossa loja online</small>
+        </span>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m9 5 7 7-7 7"/></svg>
+      </a>
+
+      <a id="whatsapp-link" class="link" href="https://api.whatsapp.com/send/?phone=556593047613&amp;text=Ol%C3%A1%21+Vim+atrav%C3%A9s+do+link+da+bio+do+Instagram+da+Joy+Store+e+gostaria+de+saber+mais+sobre+os+produtos.+%F0%9F%92%95&amp;type=phone_number&amp;app_absent=0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.3-4.8A8.5 8.5 0 1 1 20.5 11.7Z"/><path d="M8 8c0 4 4 8 7.5 8l1.5-2-2.8-1.6-1.1 1c-1.5-.6-2.7-1.8-3.3-3.3l1-1.1L9.3 6.5 8 8Z"/></svg>
+        <span>
+          <strong>Comprar pelo WhatsApp</strong>
+          <small id="whatsapp-subtitle">Fale diretamente com a loja</small>
+        </span>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m9 5 7 7-7 7"/></svg>
+      </a>
+    </nav>
+
+
+    <footer>
+      <div class="line"></div>
+      Joy Store · Moda feminina
+    </footer>
+  </main>
+
+</body>
+</html>
